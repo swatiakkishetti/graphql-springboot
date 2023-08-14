@@ -1,0 +1,40 @@
+schema {
+    query: Query
+    mutation: Mutation
+}
+
+type Category {
+    categoryId: Int
+    categoryName: String
+    description: String
+    listOfProducts: Product
+    imageUrl: String
+}
+
+type Product {
+    productId: Int
+    productName: String
+    description: String
+    imageUrl: String
+    category : Category
+    price: Float
+}
+
+type Query {
+    categoryById(categoryId:Int!) : Category
+    allCategories : [Category]
+    productById(productId:Int!) : Product
+    allProducts : [Product]
+    productByCategoryId(categoryId: Int!) : [Product]
+    productByCategoryName(categoryName: String!) : [Product]
+}
+
+type Mutation {
+    addCategory(categoryName: String!, description: String!, imageUrl: String!) : Category
+    updateCategory(categoryId: Int!, categoryName: String!, description: String!, imageUrl: String!) : Category
+    deleteCategory(categoryId: Int!) : Boolean
+    addProductsToCategory(categoryId: Int!, productId: [Int]!) : Category
+    addProduct(productName: String!, description: String!, imageUrl: String!, price: Float!) : Product
+    updateProduct(productId: Int!, productName: String!, description: String!, imageUrl: String!, price: Float!) : Product
+    deleteProduct(productId: Int!) : Boolean
+}
