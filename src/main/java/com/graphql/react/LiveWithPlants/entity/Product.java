@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigInteger;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -15,7 +17,7 @@ import lombok.Setter;
 public class Product {
     @Id
     @Column(name = "product_id")
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy=GenerationType.SEQUENCE)
     private Long productId;
     private String productName;
     private String description;
@@ -23,4 +25,5 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
+    private BigInteger price;
 }

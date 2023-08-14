@@ -6,6 +6,7 @@ import com.graphql.react.LiveWithPlants.repository.CategoryRepository;
 import com.graphql.react.LiveWithPlants.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
+import java.math.BigInteger;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,24 +21,26 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    public Product addProduct(String productName, String description, String imageUrl){
+    public Product addProduct(String productName, String description, String imageUrl, BigInteger price){
         Product product = new Product();
         product.setProductName(productName);
         product.setDescription(description);
         product.setImageUrl(imageUrl);
+        product.setPrice(price);
         productRepository.save(product);
         return product;
     }
 
-    public Product updateProduct(Long productId, String productName, String description, String imageUrl){
+    public Product updateProduct(Long productId, String productName, String description, String imageUrl, BigInteger price){
         Optional<Product> productOptional = productRepository.findById(productId);
         if(!productOptional.isPresent()){
-            throw new RuntimeException("Category not found");
+            throw new RuntimeException("Product not found");
         }
         Product product = productOptional.get();
         product.setProductName(productName);
         product.setDescription(description);
         product.setImageUrl(imageUrl);
+        product.setPrice(price);
         productRepository.save(product);
         return product;
     }
@@ -55,6 +58,16 @@ public class ProductService {
         if(!categoryOptional.isPresent()){
             throw new RuntimeException("Category not found");
         }
+        List<Product> productList = categoryOptional.get().getListOfProducts();
+        return productList;
+    }
+
+    public List<Product> productByCategoryName(String categoryName){
+        Optional<Category> categoryOptional = categoryRepository.findCategoryByCategoryName(categoryName);
+        if(!categoryOptional.isPresent()){
+            throw new RuntimeException("Category not found");
+        }
+        System.out.println(categoryOptional.get().getCategoryId());
         List<Product> productList = categoryOptional.get().getListOfProducts();
         return productList;
     }
